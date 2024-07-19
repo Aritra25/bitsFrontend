@@ -13,8 +13,7 @@ interface FormData {
   password: string;
 }
 
-
-const page = () => {
+const Page = () => {
   const router = useRouter();
   const auth = useAppSelector((state) => state.authReducer);
   const dispatch = useDispatch<AppDispatch>();
@@ -25,57 +24,81 @@ const page = () => {
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {name,value} = e.target;
+    const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value
-    })
+    });
   };
 
-  const handleLogin = async() => {
-    if(formData.email=='' || formData.password==''){
-      toast.error('Please fill all the fields')
-      return
+  const handleLogin = async () => {
+    if (formData.email === '' || formData.password === '') {
+      toast.error('Please fill all the fields');
+      return;
     }
-    let res = await fetch(process.env.NEXT_PUBLIC_API_URL+'/auth/login',{
-      method: 'POST',
-      body: JSON.stringify({
-        email: formData.email,
-        password: formData.password
-      }),
-      headers: {
-        'Content-type': 'application/json'
-      },
-      credentials: 'include'
-    })
-    let data = await res.json();
+  
+    try {
+      let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+        method: 'POST',
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include'
+      });
 
-    if(data.ok){
-      toast.success('Login Success');
-      getUserData()
-    }
-    else{
-      toast.error(data.message)
-    }
-  };
-
-  const getUserData = async () => {
-    let res = await fetch(process.env.NEXT_PUBLIC_API_URL+'/auth/getuser',{
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-type': 'application/json'
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
       }
-    })
-    let data = await res.json();
-    if(data.ok){
-      dispatch(login(data.data))
-      router.push('/myfiles')
+  
+      let data = await res.json();
+  
+      if (data.ok) {
+        toast.success('Login Success');
+        getUserData();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
     }
-    else{
-      dispatch(logout())
+  };
+  
+  const getUserData = async () => {
+    try {
+      let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/getuser`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      if (!res.ok) {
+        if (res.status === 401) {
+          toast.error('Unauthorized access. Please log in again.');
+        } else {
+          toast.error(`Failed to fetch user data: ${res.status}`);
+        }
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+  
+      let data = await res.json();
+  
+      if (data.ok) {
+        dispatch(login(data.data));
+        router.push('/myfiles');
+      } else {
+        dispatch(logout());
+      }
+    } catch (error) {
+      dispatch(logout());
     }
-  }
+  };
+
 
   return (
     <div className={styles.authpage}>
@@ -110,4 +133,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

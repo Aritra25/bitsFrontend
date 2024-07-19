@@ -42,10 +42,10 @@ const Navbar = () => {
     })
     let data = await res.json();
     if(data.ok){
-      dispatch(login(data.data))
+      return dispatch(login(data.data))
     }
     else{
-      dispatch(logout())
+      return dispatch(logout())
     }
   }
 

@@ -4,12 +4,12 @@ import styles from "@/styles/auth.module.css";
 import { useDropzone } from "react-dropzone";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 import { useDispatch } from "react-redux";
 import { login, logout } from "@/redux/features/auth-slice";
 import { useAppSelector, AppDispatch } from "@/redux/store";
 
-let socket: any = null;
+// let socket: any = null;
 let apiurl = `${process.env.NEXT_PUBLIC_API_URL}`;
 
 const Page = () => {
@@ -166,11 +166,6 @@ const Page = () => {
       let data = await res.json();
 
       if (data.ok) {
-        toast.success("File shared successfully");
-        socket.emit("uploaded", {
-          from: auth.user.email,
-          to: email,
-        });
         router.push("/myfiles");
       } else {
         toast.error("Failed to share file");
@@ -201,8 +196,8 @@ const Page = () => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  const [socketId, setSocketId] = useState<string | null>(null);
-  socket = useMemo(() => io(apiurl), [apiurl]);
+  // const [socketId, setSocketId] = useState<string | null>(null);
+  // socket = useMemo(() => io(apiurl), [apiurl]);
 
   const getUserData = async () => {
     let res = await fetch(`${apiurl}/auth/getuser`, {
@@ -226,41 +221,41 @@ const Page = () => {
     if (!auth.isAuth) {
       return router.push("/login");
     }
-  }, [auth, router]);
+  }, [auth]);
 
-  useEffect(() => {
-    socket.on("connect", () => {
-      console.log("FT connected", socket.id);
-      setSocketId(socket.id);
-    });
+  // useEffect(() => {
+  //   socket.on("connect", () => {
+  //     console.log("FT connected", socket.id);
+  //     setSocketId(socket.id);
+  //   });
 
-    if (auth.user) {
-      socket.emit("joinself", auth.user.email);
-    } else {
-      getUserData()
-        .then((user) => {
-          socket.emit("joinself", user.email);
-        })
-        .catch((err) => {
-          router.push("/login");
-        });
-    }
+  //   if (auth.user) {
+  //     socket.emit("joinself", auth.user.email);
+  //   } else {
+  //     getUserData()
+  //       .then((user) => {
+  //         socket.emit("joinself", user.email);
+  //       })
+  //       .catch((err) => {
+  //         router.push("/login");
+  //       });
+  //   }
 
-    socket.on("notify", (data: any) => {
-      toast.success(`New file from ${data.from}`);
-      // Call a function to refresh file list if needed
-    });
+  //   socket.on("notify", (data: any) => {
+  //     toast.success(`New file from ${data.from}`);
+  //     // Call a function to refresh file list if needed
+  //   });
 
-    return () => {
-      socket.off("connect");
-      socket.off("notify");
-    };
-  }, [auth.user, getUserData, router, socket]);
+  //   return () => {
+  //     socket.off("connect");
+  //     socket.off("notify");
+  //   };
+  // }, [auth.user, getUserData, router, socket]);
 
   return (
     <div className={styles.authpage}>
       <div className={styles.inputcontainer}>
-        <label htmlFor="email">Receiver's email</label>
+        <label htmlFor="email">Receiver&apos;s email</label>
         <input
           type="email"
           name="email"
@@ -332,7 +327,7 @@ const Page = () => {
               <p>Drop the files here...</p>
             ) : (
               <div className={styles.droptext}>
-                <p>Drag 'n' drop some files here, or click to select files</p>
+                <p>Drag &apos;n&apos; drop some files here, or click to select files</p>
                 <p>or</p>
                 <p>click here to select files</p>
               </div>
