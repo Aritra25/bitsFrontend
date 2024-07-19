@@ -1,0 +1,60 @@
+.allfiles{
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 5px;
+    min-height: 50vh;
+}
+
+.allfiles table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.allfiles th,.allfiles td{
+    padding: 8px;
+    text-align: left;
+}
+.allfiles th{
+    background-color: black;
+    color: white;
+}
+.allfiles tr{
+    background-color: white;
+    border: 2px solid black;
+    box-sizing: border-box;
+}
+.allfiles td svg{
+    margin-right: 5px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+/* .allfiles .filecard{
+    display: flex;
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.allfiles .filecard svg{
+    width: 30px;
+    height: 30px;
+}
+
+.allfiles .filecard .left{
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.allfiles .filecard .right svg{
+    cursor: pointer;
+} */
