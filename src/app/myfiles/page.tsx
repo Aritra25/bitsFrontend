@@ -51,18 +51,6 @@ const Page = () => {
   //   },
   // ];
 
-  const getAllFiles = async () => {
-    let res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/file/getfiles", {
-      method: "GET",
-      credentials: "include",
-    });
-    let resjson = await res.json();
-    if (resjson.ok) {
-      console.log(resjson.data);
-      setAllFiles(resjson.data);
-    }
-  };
-
   const getFileType = (fileurl: any) => {
     const extension = fileurl.split(".").pop().toLowerCase();
 
@@ -95,6 +83,17 @@ const Page = () => {
   };
 
   useEffect(() => {
+    const getAllFiles = async () => {
+      let res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/file/getfiles", {
+        method: "GET",
+        credentials: "include",
+      });
+      let resjson = await res.json();
+      if (resjson.ok) {
+        console.log(resjson.data);
+        setAllFiles(resjson.data);
+      }
+    };
     getAllFiles();
   }, []);
 
@@ -107,7 +106,7 @@ const Page = () => {
     if (!auth.isAuth) {
       return router.push("/login");
     }
-  }, [auth]);
+  }, [auth,router]);
 
   const getUserData = async () => {
     let res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/auth/getuser", {

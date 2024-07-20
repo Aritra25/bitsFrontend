@@ -13,22 +13,21 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const pathname = usePathname();
 
-
-  const checkLogin = async() => {
-    let res = await fetch(process.env.NEXT_PUBLIC_API_URL+'/auth/checklogin',{
-      method: 'GET',
-      credentials: 'include'
-    })
-    let data = await res.json();
-    if(!data.ok){
-      dispatch(logout());
-    }
-    else{
-      getUserData()
-    }
-  }
-
   useEffect(() => {
+    const checkLogin = async() => {
+      let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/checklogin`,{
+        method: 'GET',
+        credentials: 'include'
+      })
+      let data = await res.json();
+      if(!data.ok){
+        dispatch(logout());
+      }
+      else{
+        getUserData()
+      }
+    }
+  
     checkLogin()
   }, []);
 
@@ -50,7 +49,7 @@ const Navbar = () => {
   }
 
   const handleLogout = async() => {
-    let res = await fetch(process.env.NEXT_PUBLIC_API_URL+'/auth/logout',{
+    let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`,{
       method: 'POST',
       credentials: 'include'
     })

@@ -221,7 +221,7 @@ const Page = () => {
     if (!auth.isAuth) {
       return router.push("/login");
     }
-  }, [auth]);
+  }, [auth,router]);
 
   // useEffect(() => {
   //   socket.on("connect", () => {

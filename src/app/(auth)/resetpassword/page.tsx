@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import styled from "styled-components";
 import { toast } from "react-toastify";
@@ -11,7 +11,7 @@ const ResetPassword = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
-  console.log(token)
+  console.log(token);
   
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -72,7 +72,15 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+const ResetPasswordPage = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResetPassword />
+    </Suspense>
+  );
+};
+
+export default ResetPasswordPage;
 
 const Container = styled.div`
   display: flex;
