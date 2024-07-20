@@ -6,12 +6,12 @@ import styled from "styled-components";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// toast.configure();
-
 const ResetPassword = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
+
+  console.log(token)
   
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -25,7 +25,7 @@ const ResetPassword = () => {
 
     setIsLoading(true);
     try {
-      const res = await fetch(process.env.NEXT_PUBLIC_API_URL+`/auth/resetpassword/${token}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/resetpassword/${token}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

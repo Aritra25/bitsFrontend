@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import styled from "styled-components";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,7 +9,6 @@ import "react-toastify/dist/ReactToastify.css";
 // toast.configure();
 
 const ForgotPassword = () => {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -17,7 +16,7 @@ const ForgotPassword = () => {
     setIsLoading(true);
     try {
       const res = await fetch(
-        process.env.NEXT_PUBLIC_API_URL + "/auth/forgotpassword",
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/forgotpassword`,
         {
           method: "POST",
           headers: {
@@ -28,7 +27,7 @@ const ForgotPassword = () => {
       );
 
       const data = await res.json();
-      setIsLoading(false);
+      // setIsLoading(false);
 
       if (res.ok) {
         toast.success("Email sent.");
@@ -36,8 +35,11 @@ const ForgotPassword = () => {
         toast.error(data.message);
       }
     } catch (error) {
-      setIsLoading(false);
+      // setIsLoading(false);
       toast.error("Something went wrong.");
+    }
+    finally{
+      setIsLoading(false)
     }
   };
 
