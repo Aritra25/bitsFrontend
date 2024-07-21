@@ -27,16 +27,18 @@ const StyledHome = styled.div`
   color: #333;
   animation: ${fadeIn} 2s ease-in-out;
   h1: {
-  margin: 25px;
+    margin: 25px;
   }
 `;
 
 const page = () => {
   return (
-    <StyledHome>
-      <h1>Welcome to Bits!</h1>
-      <h4>Share files with anyone...</h4>
-    </StyledHome>
+    <React.StrictMode>
+      <StyledHome>
+        <h1>Welcome to Bits!</h1>
+        <h4>Share files with anyone...</h4>
+      </StyledHome>
+    </React.StrictMode>
   );
 };
 
