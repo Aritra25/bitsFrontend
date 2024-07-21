@@ -51,37 +51,30 @@ const Page = () => {
   //   },
   // ];
 
-  const getFileType = (fileurl: any) => {
-    const extension = fileurl.split(".").pop().toLowerCase();
-
+  const getFileType = (fileurl: string) => {
+    const extension = fileurl.split(".").pop()?.toLowerCase() || "";
+    
     switch (extension) {
       case "mp4":
-        return "video";
       case "avi":
-        return "video";
       case "mov":
         return "video";
       case "jpg":
-        return "image";
       case "jpeg":
-        return "image";
       case "png":
-        return "image";
       case "gif":
         return "image";
       case "pdf":
-        return "document";
       case "docx":
-        return "document";
       case "doc":
-        return "document";
       case "txt":
         return "document";
       default:
+        // console.warn(`Unknown file extension: ${extension}`); // Log unknown extensions
         return "unknown";
     }
   };
-
+  
   useEffect(() => {
     const getAllFiles = async () => {
       let res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/file/getfiles", {
@@ -90,8 +83,11 @@ const Page = () => {
       });
       let resjson = await res.json();
       if (resjson.ok) {
-        console.log(resjson.data);
-        setAllFiles(resjson.data);
+        const filesWithTypes = resjson.data.map((file: File) => ({
+          ...file,
+          fileType: getFileType(file.fileurl),
+        }));
+        setAllFiles(filesWithTypes);
       }
     };
     getAllFiles();
@@ -161,7 +157,6 @@ const Page = () => {
     let data = await res.json();
 
     if (data.ok) {
-      console.log(data);
       return data.data.signedUrl
     }
     else
@@ -175,7 +170,7 @@ const Page = () => {
         <thead>
           <tr>
             <th>Filename</th>
-            <th>File Type</th>
+            {/* <th>File Type</th> */}
             <th>Sender Email</th>
             <th>Receiver Email</th>
             <th>Shared At</th>
@@ -196,7 +191,7 @@ const Page = () => {
               return (
                 <tr key={index}>
                   <td>{file.filename}</td>
-                  <td>{file?.fileType || "Unknown"}</td>
+                  {/* <td>{file?.fileType || "Unknown"}</td> */}
                   <td>{file.senderemail}</td>
                   <td>{file?.receiveremail}</td>
                   <td>{new Date(file.sharedAt).toLocaleString()}</td>
